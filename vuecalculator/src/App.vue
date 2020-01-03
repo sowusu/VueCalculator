@@ -27,11 +27,12 @@ export default {
 }
 
 h1{
-  font-size: 2.5em;
+  font-size: 3em;
 }
 
 img{
-  max-width: 40px;
-  max-height: 40px;
+  max-width: 50px;
+  max-height: 80px;
+  height: 80px;
 }
 </style>

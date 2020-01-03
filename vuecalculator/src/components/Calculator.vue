@@ -1,14 +1,12 @@
 <template>
   <div id="calcWrapper">
-      <Display v-bind:displayValue=dispValue></Display>
-      <div id="keypad">
+      <Display v-bind:displayValue=dispValue v-bind:subDisplayValue=subDispValue></Display>
       <Button   v-for="b in buttons" 
                 v-bind:key="b.id" 
                 v-bind:bValues="b"
                 v-on:handle-press="handlePress" 
                 v-bind:style="b.id === 1 ? bStyleObjectLarge:  bStyleObjectRegular">
       </Button>
-      </div>
   </div>
 </template>
 
@@ -20,90 +18,129 @@ export default {
   data: function () {
       return {
           dispValue: "0",
+          subDispValue: "_",
           prevValue: "0",
           prevOp: "=",
           bStyleObjectRegular:{
-              width: '16%'
+              width: '25%'
           },
           bStyleObjectLarge:{
-              width: '39%',
+              width: '50%',
           },
           buttons:[
               {
                   id: 1,
-                  name: "AC"
+                  name: "AC",
+                  isReg: true,
+                  isOp: false
               },
               {
                   id: 2,
-                  name: "C"
+                  name: "C",
+                  isReg: true,
+                  isOp: false
               },
               {
                   id: 3,
-                  name: "/"
+                  name: "/",
+                  isReg: false,
+                  isOp: true
               },
               {
                   id: 4,
-                  name: "7"
+                  name: "7",
+                  isReg: true,
+                  isOp: false
               },
               {
                   id: 5,
-                  name: "8"
+                  name: "8",
+                  isReg: true,
+                  isOp: false
               },
               {
                   id: 6,
-                  name: "9"
+                  name: "9",
+                  isReg: true,
+                  isOp: false
               },
               {
                   id: 7,
-                  name: "x"
+                  name: "x",
+                  isReg: false,
+                  isOp: true
               },
               {
                   id: 8,
-                  name: "4"
+                  name: "4",
+                  isReg: true,
+                  isOp: false
               },
               {
                   id: 9,
-                  name: "5"
+                  name: "5",
+                  isReg: true,
+                  isOp: false
               },
               {
                   id: 10,
-                  name: "6"
+                  name: "6",
+                  isReg: true,
+                  isOp: false
               },
               {
                   id: 11,
-                  name: "+"
+                  name: "+",
+                  isReg: false,
+                  isOp: true
               },
               {
                   id: 12,
-                  name: "1"
+                  name: "1",
+                  isReg: true,
+                  isOp: false
               },
               {
                   id: 13,
-                  name: "2"
+                  name: "2",
+                  isReg: true,
+                  isOp: false
               },
               {
                   id: 14,
-                  name: "3"
+                  name: "3",
+                  isReg: true,
+                  isOp: false
               },
               {
                   id: 15,
-                  name: "-"
+                  name: "-",
+                  isReg: false,
+                  isOp: true
               },
               {
                   id: 16,
-                  name: "0"
+                  name: "0",
+                  isReg: true,
+                  isOp: false
               },
               {
                   id: 17,
-                  name: "."
+                  name: ".",
+                  isReg: true,
+                  isOp: false
               },
               {
                   id: 18,
-                  name: "+/-"
+                  name: "\u00b1",
+                  isReg: true,
+                  isOp: false
               },
               {
                   id: 19,
-                  name: "="
+                  name: "=",
+                  isReg: false,
+                  isOp: true
               }
           ]
       }
@@ -114,7 +151,8 @@ export default {
   },
   methods: {
       handlePress: function (event){
-          switch (event.textContent){
+          var number = event.textContent.trim();
+          switch (number){
               case "AC": this.clearAll();
                 break;
               case "C": this.clearDisplay();
@@ -128,7 +166,7 @@ export default {
               case "6":
               case "7":
               case "8":
-              case "9": this.numberPressed(event.textContent);
+              case "9": this.numberPressed(number);
               break; 
               case "+": this.computeOp("+");
                 break;
@@ -140,8 +178,28 @@ export default {
                 break;
               case "=": this.computeEqual(this.prevValue, this.dispValue, this.prevOp);
                 break;
+              case ".": this.addPoint();
+                  break;
+              case "\u00b1": this.negateValue();
+                  break;
               default:
-
+                  alert("KEY ERROR: in default");
+          }
+      },
+      negateValue: function(){
+          if (this.dispValue != "0"){
+              if (this.dispValue.indexOf("-") < 0){
+              this.dispValue = "-" + this.dispValue;
+            }
+            else{
+                this.dispValue = this.dispValue.substring(1);
+            }
+          }
+          
+      },
+      addPoint: function() {
+          if (this.dispValue.indexOf(".") < 0){
+              this.dispValue += "."
           }
       },
       numberPressed: function(number){
@@ -172,8 +230,8 @@ export default {
           this.prevOp = op;
       },
       computeEqual: function(op1, op2, op){
-          let op1_num = parseInt(op1);
-          let op2_num = parseInt(op2);
+          let op1_num = parseFloat(op1);
+          let op2_num = parseFloat(op2);
           let result = 0;
           if (op === "+"){
               result = op1_num + op2_num;
@@ -185,7 +243,13 @@ export default {
               result = op1_num * op2_num;
           }
           else if (op === "/"){
-              result = Math.floor(op1_num / op2_num);
+              if (op2_num == 0){
+                  alert("Math Error: Cannot divide by 0");
+              }
+              else{
+                  result = op1_num / op2_num;
+              }
+              
           }
           else{
               result = op2_num;
@@ -210,18 +274,12 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
 #calcWrapper {
-  width: 30%;
+  width: 40%;
   margin: auto;
-  border: 2px dashed gray;
+  border: 15px solid black;
   border-radius: 5px;
-  height: 600px;
+  height: 700px;
   overflow: hidden;
-}
-
-#keypad{
-    margin-top: 10%;
-    height: 70%;
-    border: 2px dashed green;
-    margin-bottom: 0px;
+  box-shadow: 5px 5px 5px #4b4b4c;
 }
 </style>

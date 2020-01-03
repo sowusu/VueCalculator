@@ -1,6 +1,10 @@
 <template>
   <div id="vuebutton">
-      <button class="calc-button" v-on:click=buttonPressed>{{bValues.name}}</button>
+      <button class="calc-button" 
+              v-on:click=buttonPressed
+              v-bind:class="{opButton: bValues.isOp, regButton: bValues.isReg}">
+               {{bValues.name}}
+      </button>
   </div>
 </template>
 
@@ -21,14 +25,10 @@ export default {
 
 <style>
 #vuebutton {
-  margin-left: 7%;
-  margin-top: 5%;
-  border: 2px solid black;
-  border-radius: 5px;
-  height: 14%;
-  padding: 0px;
+  margin: 0px;
+  height: 100px;
   box-sizing: border-box;
-  float: left
+  float: left;
 
 }
 
@@ -38,5 +38,13 @@ export default {
     font-family: Lato, Verdana, sans-serif;
     text-align: center;
     font-size: 30px;
+    color: white;
+}
+
+.opButton{
+    background-color: #38908f;
+}
+.regButton{
+    background-color: #676767;
 }
 </style>
