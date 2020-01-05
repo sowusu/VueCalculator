@@ -6,7 +6,7 @@
         <div id = "leftOf">{{displayValue}}</div>
         <div id = "blinker"> <Blinker /> </div>
       </div>
-      <div id="subText">{{subDisplayValue}}</div>
+      <div id="subText"><p>{{subDisplayValue}}</p></div>
   </div>
 </template>
 
@@ -71,6 +71,8 @@ import
 #subText{
     height: 100px;
     font-size: 1.5em;
-    color: gray;
+    color: #38908f;
+    border: none;
+    background-color: #f9f9f9;
 }
 </style>

@@ -26,7 +26,7 @@ export default {
               width: '25%'
           },
           bStyleObjectLarge:{
-              width: '50%',
+              width: '49.9%',
           },
           buttons:[
               {
@@ -206,6 +206,7 @@ export default {
       equalPressed: function(){
           try{
               this.computeEqual(this.prevValue, this.dispValue, this.prevOp);
+              this.subDispValue = "";
           }
           catch (e){
               alert(e);
