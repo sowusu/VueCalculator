@@ -9,6 +9,9 @@
 </template>
 
 <script>
+
+import Velocity from "velocity-animate";
+
 export default {
   name: 'vuebutton',
   props: {
@@ -16,7 +19,19 @@ export default {
   },
   methods:{
       buttonPressed: function(event){
-          this.$emit('handle-press', event.target)
+          this.$emit('handle-press', event.target);
+          let bt = event.target;
+          Velocity(bt, 
+                  {"font-size": "40px", opacity: 0.7},
+                  {duration: 100, 
+                   easing: "bounceIn",
+                   complete: function(){
+                    Velocity(bt, 
+                    {"font-size": "30px", opacity: 1},
+                    {duration: 100, easing: "bounceOut"});
+                  }}
+                  );
+          
       }
   }
 

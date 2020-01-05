@@ -18,9 +18,10 @@ export default {
   data: function () {
       return {
           dispValue: "0",
-          subDispValue: "_",
+          subDispValue: "",
           prevValue: "0",
           prevOp: "=",
+          opInEffect: false,
           bStyleObjectRegular:{
               width: '25%'
           },
@@ -176,7 +177,7 @@ export default {
                 break;
               case "x": this.computeOp("x");
                 break;
-              case "=": this.computeEqual(this.prevValue, this.dispValue, this.prevOp);
+              case "=": this.equalPressed();
                 break;
               case ".": this.addPoint();
                   break;
@@ -202,12 +203,27 @@ export default {
               this.dispValue += "."
           }
       },
+      equalPressed: function(){
+          try{
+              this.computeEqual(this.prevValue, this.dispValue, this.prevOp);
+          }
+          catch (e){
+              alert(e);
+          }
+      },
       numberPressed: function(number){
+          this.opInEffect = false;
           if (this.dispValue === "0"){
               this.dispValue = number;
           }
           else {
-              this.dispValue += number;
+              if (this.dispValue.length >= 15){
+                  alert("KEY ERROR: Display limit reached");
+              }
+              else{
+                  this.dispValue += number;
+              }
+              
           }
           
       },
@@ -224,10 +240,21 @@ export default {
           this.dispValue = this.computeOps(this.prevValue, this.dispValue, "x")
       },
       computeOp: function (op){
-          this.computeEqual(this.prevValue, this.dispValue, this.prevOp);
-          this.prevValue = this.dispValue;
-          this.dispValue = "0";
-          this.prevOp = op;
+          if (!this.opInEffect){
+            try{
+                this.computeEqual(this.prevValue, this.dispValue, this.prevOp);
+                this.prevValue = this.dispValue;
+                this.dispValue = "0";
+                this.prevOp = op;
+                this.subDispValue = this.prevValue.toString() + " " + this.prevOp + "    ";
+                this.opInEffect = true;
+            }
+            catch (e){
+                alert(e);
+            }
+            
+          }
+          
       },
       computeEqual: function(op1, op2, op){
           let op1_num = parseFloat(op1);
@@ -244,7 +271,7 @@ export default {
           }
           else if (op === "/"){
               if (op2_num == 0){
-                  alert("Math Error: Cannot divide by 0");
+                  throw "MATH ERROR: Cannot divide by 0";
               }
               else{
                   result = op1_num / op2_num;
@@ -254,7 +281,11 @@ export default {
           else{
               result = op2_num;
           }
-          this.dispValue = result.toString();
+          let temp = result.toString();
+          if (temp.length >= 15){
+              throw "DISPLAY ERROR: Computation result will not fit on display. Use C or AC to perform a simpler computation.";
+          }
+          this.dispValue = temp;
           this.prevValue = "0";
           this.prevOp = "=";
 
@@ -266,6 +297,8 @@ export default {
           this.clearDisplay();
           this.prevValue = "0";
           this.prevOp = "=";
+          this.subDispValue ="";
+          this.opInEffect = false;
       }
   }
 }

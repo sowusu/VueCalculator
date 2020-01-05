@@ -12,6 +12,7 @@
 
 <script>
 import Blinker from "./Blinker.vue";
+import Velocity from "velocity-animate";
 
 export default {
   name: 'display',
@@ -22,12 +23,12 @@ export default {
   components:{
     Blinker
   },
-  created:function(){
+  mounted:function(){
     this.onLoady()
   },
   methods: {
     onLoady: function() {
-      alert("loaded")
+      Velocity(document.getElementById("blinker"), {opacity: 0}, {loop: true});
     }
   }
   
@@ -55,10 +56,8 @@ import
 
 #displayText,  #subText{
     font-family: Lato, Verdana, sans-serif;
-    font-size: 3em;
     text-align: right;
     margin-bottom: 0px;
-    border: 2px solid orange;
     overflow:hidden;
     text-overflow: ellipsis;
 }
@@ -66,9 +65,12 @@ import
     display: flex;
     flex-direction: row;
     height: 100px;
+    font-size: 3em;
 }
 
 #subText{
     height: 100px;
+    font-size: 1.5em;
+    color: gray;
 }
 </style>
