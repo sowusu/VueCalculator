@@ -1,5 +1,3 @@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/2.0.5/velocity.ui.min.js"></script>
-
 <template>
   <div id="display">
       <div id="displayText">
@@ -37,8 +35,8 @@ export default {
 </script>
 
 <style >
+@import url('https://fonts.googleapis.com/css?family=Lato&display=swap');
 
-import 
 #display {
   width: 100%;
   border-radius: 5px;
@@ -55,7 +53,7 @@ import
 }
 
 #displayText,  #subText{
-    font-family: Lato, Verdana, sans-serif;
+    font-family: 'Lato', sans-serif;
     text-align: right;
     margin-bottom: 0px;
     overflow:hidden;

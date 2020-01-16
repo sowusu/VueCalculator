@@ -9,7 +9,6 @@
 </template>
 
 <script>
-
 import Velocity from "velocity-animate";
 
 export default {
@@ -46,7 +45,6 @@ export default {
   float: left;
 
 }
-
 .calc-button{
     width: 100%;
     height: 100%;
