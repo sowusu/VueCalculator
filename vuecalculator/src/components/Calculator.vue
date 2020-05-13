@@ -308,12 +308,20 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
 #calcWrapper {
-  width: 40%;
+  width: 100%;
   margin: auto;
+  box-sizing: border-box;
   border: 15px solid black;
   border-radius: 5px;
   height: 700px;
   overflow: hidden;
   box-shadow: 5px 5px 5px #4b4b4c;
+}
+
+@media screen and (min-width: 768px){
+    #calcWrapper {
+        width: 40%;
+        margin: auto;
+    }
 }
 </style>
